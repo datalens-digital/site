@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你的醫美診所每月燒 15 萬廣告費，但你知道哪些錢是白花的嗎？ | DataLens 達視數據</title>
+<meta name="description" content="醫美診所最常見的三個數據盲點：廣告到消費的斷裂、回購率黑洞、LINE 名單是資產還是負債？">
+<meta property="og:title" content="醫美診所最貴的三個數據盲點 | DataLens">
+<meta property="og:description" content="你的廣告費有多少是白花的？三個你答不出來的問題。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://datalens.digital/blog/medspa-data-blindspots.html">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D1B2A;
+  --navy-light: #1B2D45;
+  --teal: #1B998B;
+  --gold: #C8A951;
+  --red: #E74C3C;
+  --white: #FFFFFF;
+  --text-light: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.4);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+::selection { background: var(--gold); color: var(--navy); }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.8;
+}
+
+/* Nav */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  padding: 1rem 2rem;
+  background: rgba(13,27,42,0.95);
+  backdrop-filter: blur(12px);
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+nav a.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700;
+  color: var(--white); text-decoration: none;
+}
+nav a.logo span { color: var(--gold); }
+nav .nav-right { display: flex; gap: 1.5rem; align-items: center; }
+nav a.nav-link {
+  color: var(--text-light); font-size: 0.85rem;
+  text-decoration: none; transition: color 0.3s;
+}
+nav a.nav-link:hover { color: var(--gold); }
+nav a.cta {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--gold);
+  color: var(--gold); font-size: 0.8rem; font-weight: 600;
+  text-decoration: none; letter-spacing: 0.05em;
+  transition: all 0.3s;
+}
+nav a.cta:hover { background: var(--gold); color: var(--navy); }
+
+/* Article */
+.article {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 7rem 2rem 4rem;
+}
+.article-meta {
+  font-size: 0.7rem; color: var(--gold);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 1.5rem;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 900; line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+h1 em { color: var(--gold); font-style: normal; }
+.article-intro {
+  font-size: 1.1rem; color: var(--text-light);
+  line-height: 1.8; margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700;
+  margin: 3rem 0 1.2rem;
+}
+p {
+  font-size: 1rem; color: var(--text-light);
+  margin-bottom: 1.2rem; line-height: 1.8;
+}
+p strong { color: var(--white); font-weight: 600; }
+p em { color: var(--gold); font-style: normal; font-weight: 600; }
+
+/* Question cards */
+.q-card {
+  margin: 2rem 0;
+  padding: 1.5rem 1.8rem;
+  background: rgba(255,255,255,0.02);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 4px 4px 0;
+}
+.q-card .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem; color: var(--gold);
+  letter-spacing: 0.15em; margin-bottom: 0.5rem;
+}
+.q-card .question {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--white); line-height: 1.4;
+  margin-bottom: 0.8rem;
+}
+
+/* Answer box */
+.answer {
+  margin: 1.5rem 0;
+  padding: 1rem 1.4rem;
+  background: rgba(231,76,60,0.08);
+  border: 1px solid rgba(231,76,60,0.15);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: var(--white);
+}
+
+/* Data scatter */
+.scatter-list {
+  margin: 1.5rem 0;
+  padding: 1.2rem 1.5rem;
+  background: rgba(255,255,255,0.02);
+  border-radius: 4px;
+}
+.scatter-item {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 0.5rem 0;
+  font-size: 0.95rem; color: var(--text-light);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.scatter-item:last-child { border-bottom: none; }
+.scatter-item .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Insight box */
+.insight {
+  margin: 2rem 0;
+  padding: 1.2rem 1.5rem;
+  background: rgba(200,169,81,0.08);
+  border: 1px solid rgba(200,169,81,0.2);
+  border-radius: 4px;
+}
+.insight .label {
+  font-size: 0.6rem; color: var(--gold);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 0.4rem;
+}
+
+/* CTA */
+.cta-section {
+  margin: 3rem 0;
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(200,169,81,0.08), rgba(27,153,139,0.05));
+  border: 1px solid rgba(200,169,81,0.15);
+  border-radius: 4px;
+}
+.cta-section h2 {
+  margin-top: 0; text-align: center;
+}
+.cta-btn {
+  display: inline-block; margin-top: 1rem;
+  padding: 0.9rem 2.2rem;
+  background: linear-gradient(135deg, var(--gold), #D4B65E);
+  color: var(--navy); font-weight: 700; font-size: 0.95rem;
+  text-decoration: none; letter-spacing: 0.03em;
+  box-shadow: 0 8px 24px rgba(200,169,81,0.25);
+  transition: all 0.3s;
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,169,81,0.35); }
+
+/* Divider */
+.divider {
+  height: 1px; margin: 2.5rem 0;
+  background: rgba(255,255,255,0.06);
+}
+
+/* Author */
+.author {
+  display: flex; gap: 1rem; align-items: center;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.02);
+  border-radius: 4px;
+  margin-top: 3rem;
+}
+.author-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--navy-light); border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-size: 1.2rem;
+  color: var(--gold); flex-shrink: 0;
+}
+.author-info { font-size: 0.85rem; color: var(--text-light); line-height: 1.5; }
+.author-name { color: var(--white); font-weight: 600; }
+
+/* Footer */
+footer {
+  margin-top: 4rem; padding: 2rem;
+  text-align: center; font-size: 0.65rem;
+  color: var(--text-muted); letter-spacing: 0.05em;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+@media (max-width: 600px) {
+  .article { padding: 6rem 1.2rem 3rem; }
+  nav { padding: 0.8rem 1.2rem; }
+  .q-card { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Data<span>Lens</span> <span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;color:rgba(255,255,255,0.4);letter-spacing:0.1em;margin-left:4px">達視數據</span></a>
+  <div class="nav-right">
+    <a href="/" class="nav-link">首頁</a>
+    <a href="mailto:quinn@datalens.digital" class="cta">免費健診</a>
+  </div>
+</nav>
+
+<article class="article">
+
+  <div class="article-meta">DataLens Blog · 2026 年 3 月</div>
+
+  <h1>你的醫美診所每月燒 15 萬廣告費，<br>但你知道<em>哪些錢是白花的</em>嗎？</h1>
+
+  <div class="article-intro">
+    上個月，你的診所在 Google 和 Facebook 上花了多少錢？大部分院長能說出一個數字。<br><br>
+    好，第二個問題：<strong>這些錢帶來的客人，最後有多少人真的消費了？</strong><br><br>
+    大部分院長說不出來。這不是你的錯。這是整個產業的結構性問題。
+  </div>
+
+  <h2>三個你答不出來的問題</h2>
+
+  <!-- Question 1 -->
+  <div class="q-card">
+    <div class="num">QUESTION 01</div>
+    <div class="question">昨天成交十萬的那五位客人，是看了哪則廣告進來的？</div>
+  </div>
+
+  <p>你的代操公司月報寫著：「本月曝光 50 萬次，點擊 3,000 次，CPC 降低 8%。」</p>
+  <p>聽起來不錯。但你知道那 3,000 次點擊裡面，有幾個人走進你的診所嗎？有幾個人最後刷了卡？</p>
+
+  <div class="answer">
+    <strong>答案是：不知道。</strong><br>
+    因為廣告後台只看到「點擊」，你的 HIS 系統只看到「成交」，這兩個系統中間隔著一道牆。沒人知道點擊是怎麼變成成交的——或者根本沒變成。
+  </div>
+
+  <p>你可能正在花大錢買一個<em>數字好看的月報</em>，而不是買客人。</p>
+
+  <div class="divider"></div>
+
+  <!-- Question 2 -->
+  <div class="q-card">
+    <div class="num">QUESTION 02</div>
+    <div class="question">皮秒客人做完第一次，多少人回來做第二次？</div>
+  </div>
+
+  <p>醫美的利潤不在第一次，在回購。</p>
+  <p>第一次到店的客人，你花了 <strong>NT$3,000-8,000</strong> 的廣告費才把他帶進來。如果他做完一次皮秒就消失了，你是虧錢的。</p>
+  <p>但大部分診所不追蹤回購率。預約系統記錄了誰來過，但沒有人把這個資料拉出來看「做完皮秒的客人，三個月內有多少人回來做第二次？」</p>
+
+  <div class="insight">
+    <div class="label">關鍵決策</div>
+    <p style="margin-bottom:0">如果皮秒的回購率只有 15%，但電波拉提是 45%，你應該把廣告預算從皮秒搬到電波嗎？<strong>沒有數據，這個決策只能靠猜。</strong></p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Question 3 -->
+  <div class="q-card">
+    <div class="num">QUESTION 03</div>
+    <div class="question">你的 LINE 好友名單，是資產還是負債？</div>
+  </div>
+
+  <p>你的 LINE OA 可能有一萬、三萬個好友。聽起來是一筆巨大的資產。</p>
+  <p>但裡面有多少人是半年沒消費的？有多少人加了好友之後從來沒踏進診所？</p>
+  <p>如果你不知道，那這份名單不是資產，是<em>個資風險</em>。你存著幾萬筆個人資料，但它沒有替你賺一塊錢。</p>
+  <p>更糟的是，你的 LINE 群發訊息是一視同仁的——三個月前剛花二十萬做療程的 VIP，跟加了好友從來沒來過的路人，收到一模一樣的訊息。</p>
+  <p><strong>VIP 覺得被當路人，路人覺得被騷擾。兩邊都不開心。</strong></p>
+
+  <div class="divider"></div>
+
+  <!-- Why -->
+  <h2>為什麼會這樣？</h2>
+
+  <p>不是因為你不夠努力。是因為你的數據散落在五個地方：</p>
+
+  <div class="scatter-list">
+    <div class="scatter-item"><div class="dot" style="background:#4285F4"></div><strong>廣告後台</strong>（Google Ads / Meta）知道誰點了</div>
+    <div class="scatter-item"><div class="dot" style="background:#34A853"></div><strong>預約系統</strong>（1.Talk / 美業歐巴）知道誰預約了</div>
+    <div class="scatter-item"><div class="dot" style="background:#EA4335"></div><strong>HIS 系統</strong>知道誰消費了</div>
+    <div class="scatter-item"><div class="dot" style="background:#06C755"></div><strong>LINE OA</strong> 知道誰加了好友</div>
+    <div class="scatter-item"><div class="dot" style="background:#FBBC05"></div><strong>POS</strong> 知道金額</div>
+  </div>
+
+  <p>這五個系統各自為政，沒有人把它們串起來。所以你只能看到五個片段，看不到完整的故事。</p>
+  <p>你的代操公司只管廣告後台的數字好看。你的診所管理系統只管當天營收。<strong>沒有人在幫你看全局。</strong></p>
+
+  <div class="divider"></div>
+
+  <!-- Solution -->
+  <h2>那怎麼辦？</h2>
+
+  <p>答案不是買更多工具，也不是請一個工程師。</p>
+  <p>答案是<em>先問對問題</em>。</p>
+  <p>在你花錢串系統之前，你需要先知道：<strong>你到底需要做什麼決策？</strong></p>
+
+  <div class="insight">
+    <div class="label">Decision-Led Analytics 的邏輯</div>
+    <p>你需要決定廣告預算怎麼分配？→ 你需要的是 <strong>True ROAS</strong>（每個關鍵字帶來多少實際營收），不是 CPC。</p>
+    <p>你需要決定推哪個療程？→ 你需要的是各療程的<strong>回購率和 LTV</strong>，不是月營收排名。</p>
+    <p style="margin-bottom:0">你需要決定怎麼經營舊客？→ 你需要的是 LINE 名單的<strong>分群和沉睡客喚醒機制</strong>。</p>
+  </div>
+
+  <p><em>先定義決策，再建數據。這個順序很重要。</em></p>
+  <p>大部分人做反了——先建了一堆報表，然後發現沒人看。</p>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>免費 30 分鐘，幫你找出你最貴的盲點</h2>
+    <p>不推銷、不報價。就是幫你看一件事：<br><strong>你目前的數據裡，哪一個斷點正在讓你虧最多錢。</strong></p>
+    <a href="mailto:quinn@datalens.digital" class="cta-btn">預約免費健診 →</a>
+    <div style="margin-top:0.8rem;font-size:0.8rem;color:var(--text-muted)">quinn@datalens.digital</div>
+  </div>
+
+  <!-- Author -->
+  <div class="author">
+    <div class="author-avatar">Q</div>
+    <div class="author-info">
+      <div class="author-name">Quinn Chen 陳易榆</div>
+      CEO, DataLens 達視數據。Georgia Tech CS + Brandeis 經濟財務雙碩士。曾為日本上市公司的 D2C 品牌建立 BI 系統。專注於幫台灣中型企業用數據做更好的決策。
+    </div>
+  </div>
+
+</article>
+
+<footer>
+  © 2026 DataLens 達視數據 — Decision-Led Analytics
+</footer>
+
+</body>
+</html>
+
